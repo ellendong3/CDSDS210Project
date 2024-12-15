@@ -92,15 +92,32 @@ fn degreetonode(degreelibrary: HashMap<u32, u32>, vec: Vec<u32>) -> (HashMap<u32
     let mut uniquevec: Vec<u32> = vec.clone();
     uniquevec.sort();
     uniquevec.dedup();
-    for i in uniquevec {
-        let key = degreetonodes.entry(i).or_insert(0);
+    for i in &uniquevec {
+        let key = degreetonodes.entry(*i).or_insert(0);
         let prob = (*key as f32) / (36692 as f32) as f32;
         probs.push(prob);
-        finalprob.insert(i, prob);
+        finalprob.insert(*i, prob);
+    }
+
+    for i in &uniquevec {
+        let key = finalprob.entry(*i).or_insert(0.0);
+        println!("{:?} degree(s) has a frequency of {:?}", i, key);
+    }
+
+    let mut sortedprobs = probs.clone();
+    sortedprobs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    sortedprobs.reverse();
+
+    println!("---------------------------------");
+
+    for i in 0..25 {
+        let node = probs.iter().position(|&r| r == sortedprobs[i]).unwrap();
+        println!("{:?}. {:?} degrees has a frequency of {:?}", i + 1, node + 1, sortedprobs[i]);
     }
 
     return (finalprob, probs)
 }
+
 
     /*
 
