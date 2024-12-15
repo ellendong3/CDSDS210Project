@@ -8,7 +8,7 @@ fn main() {
     //println!("Hello, world!");
     let library = readfile();
     let degrees = degreetotal(library);
-    println!("{:?}", degrees.get(&1));
+    //println!("{:?}", degrees.get(&1));
 
 }
 
@@ -60,7 +60,16 @@ fn readfile() -> HashMap<u32, Vec<u32>> {
 
 }
 
+fn degreetotal(library: HashMap<u32, Vec<u32>>) -> HashMap<u32, u32> {
+    let mut degreelibrary: HashMap<u32, u32> = HashMap::new();
+    for i in 0..36692 {
+        let node = library.get(&i);
+        let degrees = node.unwrap().len();
+        degreelibrary.insert(i, degrees.try_into().unwrap());
+    }
 
+    return degreelibrary
+}
 
 
     /*
