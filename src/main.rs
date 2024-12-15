@@ -33,7 +33,7 @@ fn main() {
                 let (probibilities, probvec) = degreetonode(degreesmap, degreesvec, number);
                 counter += 1;
             } else {
-                println!("Try again. Bad input");
+                println!("Number not in range. Try again");
                 io::stdin().read_line(&mut input).expect("Failed to read line"); 
             }
         }
