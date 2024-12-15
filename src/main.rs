@@ -7,8 +7,9 @@ use std::collections::HashSet;
 fn main() {
     //println!("Hello, world!");
     let library = readfile();
-    let degrees = degreetotal(library);
-    //println!("{:?}", degrees.get(&1));
+    let (degreesmap, degreesvec) = degreetotal(library);
+    let degreenodes = degreetonode(degreesmap);
+    println!("{:?}", degreenodes.get(&70));
 
 }
 
@@ -60,17 +61,33 @@ fn readfile() -> HashMap<u32, Vec<u32>> {
 
 }
 
-fn degreetotal(library: HashMap<u32, Vec<u32>>) -> HashMap<u32, u32> {
+fn degreetotal(library: HashMap<u32, Vec<u32>>) -> (HashMap<u32, u32>, Vec<u32>) {
     let mut degreelibrary: HashMap<u32, u32> = HashMap::new();
+    let mut degreevector: Vec<u32> = Vec::new();
     for i in 0..36692 {
         let node = library.get(&i);
         let degrees = node.unwrap().len();
+        degreevector.push(degrees as u32);
         degreelibrary.insert(i, degrees.try_into().unwrap());
     }
 
-    return degreelibrary
+    return (degreelibrary, degreevector)
 }
 
+fn degreetonode(degreelibrary: HashMap<u32, u32>) -> HashMap<u32, u32> {
+    let mut degreetonodes: HashMap<u32, u32> = HashMap::new();
+    for i in 0..36692 {
+        let degrees: u32 = *degreelibrary.get(&i).unwrap() as u32;
+        if degreetonodes.get(&degrees) == None {
+            degreetonodes.insert(degrees as u32, 1);
+        } else {
+            let key = degreetonodes.entry(degrees).or_insert(0);
+            *key += 1;
+        }
+    }
+
+    return degreetonodes
+}
 
     /*
 
