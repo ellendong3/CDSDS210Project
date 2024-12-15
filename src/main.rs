@@ -83,5 +83,5 @@ fn correctprobibility() {
     let (degreesmap, degreesvec) = degreetotal(library);
     let (probibilities, probvec) = degreetonode(degreesmap, degreesvec, 0);
     let mut sum: f32 = probvec.iter().sum();
-    assert!(sum > 0.99);
+    assert!(sum > 0.99 && sum < 1.1);
 }
