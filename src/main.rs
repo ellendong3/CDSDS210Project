@@ -26,7 +26,7 @@ fn main() {
             let (probibilities, probvec) = degreetonode(degreesmap, degreesvec, 0);
             counter += 1;
         } else {
-            let number: usize = input.parse().expect("Not a integer number");
+            let number: usize = input.parse().expect("Not an integer number");
             if number >= 1 && number <= 74 {
                 let library = readfile();
                 let (degreesmap, degreesvec) = degreetotal(library);
