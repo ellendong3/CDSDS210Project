@@ -4,12 +4,14 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 
 
+
 fn main() {
     //println!("Hello, world!");
     let library = readfile();
     let (degreesmap, degreesvec) = degreetotal(library);
-    let degreenodes = degreetonode(degreesmap);
-    println!("{:?}", degreenodes.get(&70));
+    let (degreenodes, probs) = degreetonode(degreesmap, degreesvec);
+
+    //println!("{:?}", degreenodes.get(&70));
 
 }
 
@@ -74,8 +76,10 @@ fn degreetotal(library: HashMap<u32, Vec<u32>>) -> (HashMap<u32, u32>, Vec<u32>)
     return (degreelibrary, degreevector)
 }
 
-fn degreetonode(degreelibrary: HashMap<u32, u32>) -> HashMap<u32, u32> {
+fn degreetonode(degreelibrary: HashMap<u32, u32>, vec: Vec<u32>) -> (HashMap<u32, f32>, Vec<f32>) {
+    let mut finalprob: HashMap<u32, f32> = HashMap::new();
     let mut degreetonodes: HashMap<u32, u32> = HashMap::new();
+    let mut probs: Vec<f32> = Vec::new();
     for i in 0..36692 {
         let degrees: u32 = *degreelibrary.get(&i).unwrap() as u32;
         if degreetonodes.get(&degrees) == None {
@@ -85,8 +89,17 @@ fn degreetonode(degreelibrary: HashMap<u32, u32>) -> HashMap<u32, u32> {
             *key += 1;
         }
     }
+    let mut uniquevec: Vec<u32> = vec.clone();
+    uniquevec.sort();
+    uniquevec.dedup();
+    for i in uniquevec {
+        let key = degreetonodes.entry(i).or_insert(0);
+        let prob = (*key as f32) / (36692 as f32) as f32;
+        probs.push(prob);
+        finalprob.insert(i, prob);
+    }
 
-    return degreetonodes
+    return (finalprob, probs)
 }
 
     /*
